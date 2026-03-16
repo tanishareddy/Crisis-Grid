@@ -1,4 +1,4 @@
-# Crisis Grid
+# Crisis Grid (https://crisis-grid-sigma.vercel.app/)
 
 Real-time AI-powered smart city infrastructure monitoring and cascading failure prediction dashboard for Bangalore, India. Monitors power, water, gas, communications, and civil infrastructure with AI-assisted fault analysis powered by Amazon Bedrock.
 
