@@ -112,17 +112,41 @@ Enable Bedrock model access for `anthropic.claude-3-haiku-20240307-v1:0` in the 
 
 ## Architecture
 
-```mermaid
-flowchart TD
-A[Sensor Data Recorded] --> B[S3 Data Storage]
-B --> C[Lambda ML Inference]
-C --> D[Failure Prediction Generated]
-D --> E[DynamoDB Event Storage]
-E --> F[AI Analysis via Amazon Bedrock]
-F --> G[API Gateway Response]
-G --> H[React Dashboard Updates Map]
-H --> I[SNS Sends Alerts]
+## Crisis Grid System Flow
 
-## License
+Sensor data generated (substations, infrastructure sensors)
 
-MIT
+↓
+
+Stored in S3 dataset bucket
+
+↓
+
+Lambda ML inference runs
+(Isolation Forest · XGBoost · Random Forest)
+
+↓
+
+Failure prediction generated
+
+↓
+
+Event stored in DynamoDB
+(fault logs and incident history)
+
+↓
+
+AI analysis via Amazon Bedrock
+(Claude 3 Haiku risk analysis)
+
+↓
+
+API Gateway returns response to frontend
+
+↓
+
+React Dashboard updates map and incident panel
+
+↓
+
+SNS sends alerts to citizens and operators
