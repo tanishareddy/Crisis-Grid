@@ -1,0 +1,11 @@
+__pycache__/
+*.pkl
+*.pyc
+data/raw/
+node_modules/
+dist/
+.env
+*.log
+
+# AWS config — contains live API URLs and ARNs, never commit
+deploy/aws_config.json

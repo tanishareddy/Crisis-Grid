@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Crisis Grid — System Architecture</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0d1117; color: #e6edf3; font-family: 'Segoe UI', system-ui, sans-serif; padding: 32px; }
+  h1 { text-align: center; font-size: 1.6rem; margin-bottom: 6px; color: #58a6ff; }
+  .subtitle { text-align: center; color: #8b949e; font-size: 0.9rem; margin-bottom: 40px; }
+
+  .diagram { display: flex; flex-direction: column; gap: 24px; max-width: 1100px; margin: 0 auto; }
+
+  .layer { border: 1px solid #30363d; border-radius: 12px; padding: 20px 24px; }
+  .layer-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px; }
+
+  .boxes { display: flex; flex-wrap: wrap; gap: 12px; }
+  .box {
+    border-radius: 8px; padding: 12px 16px; min-width: 140px; flex: 1;
+    border: 1px solid transparent; font-size: 0.82rem;
+  }
+  .box .icon { font-size: 1.4rem; margin-bottom: 6px; }
+  .box .name { font-weight: 600; margin-bottom: 2px; }
+  .box .desc { font-size: 0.74rem; opacity: 0.7; line-height: 1.4; }
+
+  /* Layer colours */
+  .layer.user    { border-color: #388bfd40; background: #0d1117; }
+  .layer.user .layer-title { color: #388bfd; }
+  .layer.user .box { background: #1c2433; border-color: #388bfd40; }
+
+  .layer.frontend { border-color: #3fb95040; background: #0d1117; }
+  .layer.frontend .layer-title { color: #3fb950; }
+  .layer.frontend .box { background: #0f1f14; border-color: #3fb95040; }
+
+  .layer.security { border-color: #d2992240; background: #0d1117; }
+  .layer.security .layer-title { color: #d29922; }
+  .layer.security .box { background: #1f1a0f; border-color: #d2992240; }
+
+  .layer.aws { border-color: #f7853440; background: #0d1117; }
+  .layer.aws .layer-title { color: #f78534; }
+  .layer.aws .box { background: #1f1208; border-color: #f7853440; }
+
+  .layer.ai { border-color: #bc8cff40; background: #0d1117; }
+  .layer.ai .layer-title { color: #bc8cff; }
+  .layer.ai .box { background: #160d1f; border-color: #bc8cff40; }
+
+  .layer.data { border-color: #ff7b7240; background: #0d1117; }
+  .layer.data .layer-title { color: #ff7b72; }
+  .layer.data .box { background: #1f0d0d; border-color: #ff7b7240; }
+
+  /* Arrows between layers */
+  .arrow { display: flex; align-items: center; justify-content: center; gap: 8px; color: #8b949e; font-size: 0.78rem; }
+  .arrow::before, .arrow::after { content: ''; flex: 1; height: 1px; background: #30363d; }
+
+  /* Flow legend */
+  .legend { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; margin-top: 32px; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.78rem; color: #8b949e; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+</style>
+</head>
+<body>
+
+<h1>Crisis Grid — System Architecture</h1>
+<p class="subtitle">Real-time smart-city infrastructure monitoring · Bangalore, India</p>
+
+<div class="diagram">
+
+  <!-- USER -->
+  <div class="layer user">
+    <div class="layer-title">👤 User / Browser</div>
+    <div class="boxes">
+      <div class="box">
+        <div class="icon">🖥️</div>
+        <div class="name">Operator Dashboard</div>
+        <div class="desc">React 19 SPA served via Vercel CDN</div>
+      </div>
+      <div class="box">
+        <div class="icon">📱</div>
+        <div class="name">Citizen Alerts</div>
+        <div class="desc">SNS push notifications for critical faults</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow">HTTPS · x-api-key header</div>
+
+  <!-- SECURITY -->
+  <div class="layer security">
+    <div class="layer-title">🔒 Security Layer</div>
+    <div class="boxes">
+      <div class="box">
+        <div class="icon">🔑</div>
+        <div class="name">API Key Auth</div>
+        <div class="desc">x-api-key validated on every Lambda request · 401 on mismatch</div>
+      </div>
+      <div class="box">
+        <div class="icon">🌐</div>
+        <div class="name">CORS Policy</div>
+        <div class="desc">Origin locked to configured frontend domain · no wildcard</div>
+      </div>
+      <div class="box">
+        <div class="icon">🛡️</div>
+        <div class="name">Input Validation</div>
+        <div class="desc">Allowlist checks on substation ID, fault type, severity, sensor fields</div>
+      </div>
+      <div class="box">
+        <div class="icon">🚫</div>
+        <div class="name">Secrets Management</div>
+        <div class="desc">API key + ARNs in Lambda env vars · .env and aws_config.json gitignored</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow">Validated request</div>
+
+  <!-- FRONTEND -->
+  <div class="layer frontend">
+    <div class="layer-title">⚛️ Frontend — React + Vite (Vercel)</div>
+    <div class="boxes">
+      <div class="box">
+        <div class="icon">📊</div>
+        <div class="name">Dashboard</div>
+        <div class="desc">Live sensor stats, map, risk gauge, alert panel</div>
+      </div>
+      <div class="box">
+        <div class="icon">🗺️</div>
+        <div class="name">Bangalore Map</div>
+        <div class="desc">Leaflet map · substation markers · infra layer toggles</div>
+      </div>
+      <div class="box">
+        <div class="icon">🔥</div>
+        <div class="name">Disaster Mode</div>
+        <div class="desc">Scenario overlays · flood, earthquake, fire, cyclone</div>
+      </div>
+      <div class="box">
+        <div class="icon">📋</div>
+        <div class="name">Incidents</div>
+        <div class="desc">Auto-generated incident log · filter by type, severity, status</div>
+      </div>
+      <div class="box">
+        <div class="icon">🤖</div>
+        <div class="name">Decision Support</div>
+        <div class="desc">useBedrock hook · Claude AI analysis per fault</div>
+      </div>
+      <div class="box">
+        <div class="icon">📈</div>
+        <div class="name">Analytics</div>
+        <div class="desc">Historical charts · failure patterns · repair time trends</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow">POST /analyze · HTTPS · API key</div>
+
+  <!-- AWS -->
+  <div class="layer aws">
+    <div class="layer-title">☁️ AWS Backend — us-east-1</div>
+    <div class="boxes">
+      <div class="box">
+        <div class="icon">🚪</div>
+        <div class="name">API Gateway</div>
+        <div class="desc">HTTP API · POST /analyze · CORS configured · routes to Lambda</div>
+      </div>
+      <div class="box">
+        <div class="icon">λ</div>
+        <div class="name">Lambda — bedrock_handler</div>
+        <div class="desc">Python 3.12 · validates input · calls Bedrock · logs to DynamoDB · fires SNS</div>
+      </div>
+      <div class="box">
+        <div class="icon">λ</div>
+        <div class="name">Lambda — inference</div>
+        <div class="desc">ML inference · loads models from S3 · Isolation Forest + XGBoost + Random Forest</div>
+      </div>
+      <div class="box">
+        <div class="icon">🔔</div>
+        <div class="name">SNS</div>
+        <div class="desc">crisis-grid-alerts topic · citizen notifications for high/critical faults</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow">SDK calls (boto3)</div>
+
+  <!-- AI -->
+  <div class="layer ai">
+    <div class="layer-title">🧠 AI — Amazon Bedrock</div>
+    <div class="boxes">
+      <div class="box">
+        <div class="icon">💬</div>
+        <div class="name">Claude 3 Haiku</div>
+        <div class="desc">Fault analysis · cascade risk · restoration estimate · citizen message</div>
+      </div>
+      <div class="box">
+        <div class="icon">📝</div>
+        <div class="name">Structured Prompt</div>
+        <div class="desc">Substation context · sensor readings · reroute paths · fault history · JSON output schema</div>
+      </div>
+      <div class="box">
+        <div class="icon">🔄</div>
+        <div class="name">Local Fallback</div>
+        <div class="desc">Rule-based templates per fault type when AWS not configured</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow">Read / Write</div>
+
+  <!-- DATA -->
+  <div class="layer data">
+    <div class="layer-title">🗄️ Data — AWS Storage</div>
+    <div class="boxes">
+      <div class="box">
+        <div class="icon">🗃️</div>
+        <div class="name">DynamoDB</div>
+        <div class="desc">crisis-grid-faults table · PK: substation_id · SK: fault_id · 30-day TTL</div>
+      </div>
+      <div class="box">
+        <div class="icon">🪣</div>
+        <div class="name">S3</div>
+        <div class="desc">crisis-grid-data bucket · raw CSV dataset · trained ML model artifacts (.pkl)</div>
+      </div>
+      <div class="box">
+        <div class="icon">⚡</div>
+        <div class="name">In-Memory (Frontend)</div>
+        <div class="desc">React state · sensor readings Map · active events · incidents array</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- LEGEND -->
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#388bfd"></div> User / Browser</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#d29922"></div> Security</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#3fb950"></div> Frontend (Vercel)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#f78534"></div> AWS Backend</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#bc8cff"></div> AI (Bedrock)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#ff7b72"></div> Data Storage</div>
+</div>
+
+</body>
+</html>
