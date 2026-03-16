@@ -1,8 +1,10 @@
 # Crisis Grid (https://crisis-grid-sigma.vercel.app/)
 
 Real-time AI-powered smart city infrastructure monitoring and cascading failure prediction dashboard for Bangalore, India. Monitors power, water, gas, communications, and civil infrastructure with AI-assisted fault analysis powered by Amazon Bedrock.
+The platform integrates machine learning models, serverless cloud
+infrastructure, and AI-assisted analysis to support rapid decision-making
+during infrastructure crises
 
-![Crisis Grid Dashboard](dashboard/public/favicon.svg)
 
 ## Features
 
@@ -17,15 +19,27 @@ Real-time AI-powered smart city infrastructure monitoring and cascading failure 
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Frontend | React 19, Vite, Recharts, Leaflet |
-| Backend | AWS Lambda (Python 3.12) |
-| AI | Amazon Bedrock — Claude 3 Haiku |
-| Database | Amazon DynamoDB |
-| Alerts | Amazon SNS |
-| API | Amazon API Gateway (HTTP API) |
-| ML | scikit-learn, XGBoost, Random Forest |
+Frontend
+- React
+- Vite
+- React Leaflet
+- Recharts
+
+Cloud Infrastructure
+- AWS Lambda
+- API Gateway
+- DynamoDB
+- S3
+- SNS
+
+AI / ML
+- Isolation Forest
+- XGBoost
+- Random Forest
+- Amazon Bedrock (Claude 3)
+
+Deployment
+- Vercel
 
 ## Project Structure
 
