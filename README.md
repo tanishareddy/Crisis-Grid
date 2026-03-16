@@ -112,7 +112,16 @@ Enable Bedrock model access for `anthropic.claude-3-haiku-20240307-v1:0` in the 
 
 ## Architecture
 
-See [`architecture-diagram.html`](architecture-diagram.html) for the full system diagram.
+```mermaid
+flowchart TD
+A[Sensor Data Recorded] --> B[S3 Data Storage]
+B --> C[Lambda ML Inference]
+C --> D[Failure Prediction Generated]
+D --> E[DynamoDB Event Storage]
+E --> F[AI Analysis via Amazon Bedrock]
+F --> G[API Gateway Response]
+G --> H[React Dashboard Updates Map]
+H --> I[SNS Sends Alerts]
 
 ## License
 
