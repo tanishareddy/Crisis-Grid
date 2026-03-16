@@ -1,12 +1,13 @@
 # Crisis Grid
 
-Real-time smart-city infrastructure monitoring and crisis management dashboard for Bangalore, India. Monitors power, water, gas, communications, and civil infrastructure with AI-assisted fault analysis powered by Amazon Bedrock.
+Real-time AI-powered smart city infrastructure monitoring and cascading failure prediction dashboard for Bangalore, India. Monitors power, water, gas, communications, and civil infrastructure with AI-assisted fault analysis powered by Amazon Bedrock.
 
 ![Crisis Grid Dashboard](dashboard/public/favicon.svg)
 
 ## Features
 
-- Live sensor polling across 5 infrastructure domains
+- Infrastructure Monitoring Dashboard across 5 domains
+- AI anomaly detection for sensor Data using ML models
 - AI fault analysis via Claude 3 Haiku (Amazon Bedrock)
 - Cascade failure simulation for BESCOM power substations
 - Disaster mode overlays (flood, earthquake, fire, etc.)
@@ -108,14 +109,6 @@ Your IAM user needs:
 
 Enable Bedrock model access for `anthropic.claude-3-haiku-20240307-v1:0` in the AWS Console before deploying.
 
-## Deployment on Vercel
-
-See [Vercel Deployment Guide](#vercel-deployment) below.
-
-1. Push this repo to GitHub
-2. Import the project in Vercel, set root directory to `dashboard`
-3. Add environment variables in Vercel dashboard
-4. Deploy
 
 ## Architecture
 
